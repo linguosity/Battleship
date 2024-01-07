@@ -1,6 +1,8 @@
-/*body, html {
-    
-}*/
+body, html {
+    margin: auto 0;
+    padding: 0;
+    height: 100vh;
+}
 
 body {
     display: flex;
@@ -8,12 +10,15 @@ body {
     flex-wrap: wrap;
     height:100vh;
     width:100vw;
+    box-sizing: border-box;
+    padding: 1%;
+    background-color: white;
 }
 
 #side-menu {
     background-color: aqua;
-    height:100vh;
-    width: 20%;
+    height:100%;
+    width: 10%;
 }
 
 #header {
@@ -21,12 +26,12 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     width:100%;
-    height:20%;
+    height:30%;
 }
 
 #title {
     background-color: blue;
-    height:10%;
+    height:20%;
     width:100%;
     color:white;
 }
@@ -45,12 +50,11 @@ body {
 }
 
 main {
-    background-color: lightblue;
+    
     height:100%;
-    width:80%;
+    width: 90%;
     display: flex;
     flex-direction: column;
-   
 }
 
 footer {
@@ -72,17 +76,18 @@ footer {
     align-items: center;
     align-content: center;
     justify-content: center;
-    background-color: yellow;
 
 }
 #user-grid {
     width:340px;
     height:340px;
+    background-color: yellow;
 }
 
 #computer-grid {
     width:240px;
     height:240px;
+    background-color: yellowgreen;
 }
 
 #ship-catalogue {
@@ -104,5 +109,9 @@ footer {
     background-color: beige;
     width:50%;
     height:100%;
+}
+
+.minimal {
+    border-radius: 8px;
 }
 
