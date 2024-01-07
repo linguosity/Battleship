@@ -1,11 +1,13 @@
-body, html {
+/*body, html {
     
-}
+}*/
 
 body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    height:100vh;
+    width:100vw;
 }
 
 #side-menu {
@@ -14,16 +16,41 @@ body {
     width: 20%;
 }
 
-header {
-    background-color: blue;
+#header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width:100%;
     height:20%;
-    width:80%;
+}
+
+#title {
+    background-color: blue;
+    height:10%;
+    width:100%;
+    color:white;
+}
+
+#announcements {
+    background-color: rgb(28, 28, 180);
+    height:20%;
+    width:60%;
+    color:white;
+}
+
+#fire-button {
+    height:20%;
+    width:5%;
+    background-color: aquamarine;
 }
 
 main {
     background-color: lightblue;
-    height:20%;
+    height:100%;
     width:80%;
+    display: flex;
+    flex-direction: column;
+   
 }
 
 footer {
@@ -31,3 +58,51 @@ footer {
     height:20%;
     width:80%;
 }
+
+#user-grid, #computer-grid {
+    display:grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px;
+    border: solid black 1px;
+}
+
+#boards {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    background-color: yellow;
+
+}
+#user-grid {
+    width:340px;
+    height:340px;
+}
+
+#computer-grid {
+    width:240px;
+    height:240px;
+}
+
+#ship-catalogue {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    align-content: center;
+    width:100%;
+    height:15%;
+}
+
+#harbor {
+    width:50%;
+    background-color: azure;
+    height: 100%;
+}
+
+#graveYard {
+    background-color: beige;
+    width:50%;
+    height:100%;
+}
+
