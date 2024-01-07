@@ -1,0 +1,33 @@
+body, html {
+    
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#side-menu {
+    background-color: aqua;
+    height:100vh;
+    width: 20%;
+}
+
+header {
+    background-color: blue;
+    height:20%;
+    width:80%;
+}
+
+main {
+    background-color: lightblue;
+    height:20%;
+    width:80%;
+}
+
+footer {
+    background-color: bisque;
+    height:20%;
+    width:80%;
+}
