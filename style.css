@@ -87,7 +87,8 @@ footer {
 #computer-grid {
     width:240px;
     height:240px;
-    background-color: yellowgreen;
+    gap: 6px;
+    background-color: blueviolet;
 }
 
 #ship-catalogue {
@@ -113,5 +114,34 @@ footer {
 
 .minimal {
     border-radius: 8px;
+}
+
+.cell1 {
+    grid-area: 8 / 1/ 11 / 1;
+    background-color: aliceblue;
+}
+
+.cell11 {
+    grid-area: 2 / 2 / 1 / 2;
+    background-color: aliceblue;
+}
+
+.cell2 {
+    grid-area: 2 / 1/ 2 / 1;
+    background-color: antiquewhite;
+}
+
+.cell3 {
+    grid-area: 3 / 1 / 3 / 2;
+    background-color:bisque;
+}
+
+.cell4 {
+    grid-area: 4 / 1/ 4 / 1;
+    background-color: aquamarine;
+}
+.cell5 {
+    grid-area: 5 / 1/ 5 / 1;
+    background-color: antiquewhite;
 }
 

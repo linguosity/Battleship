@@ -55,6 +55,8 @@ class Board {
     }
 }
 
+//dynamically generate the html for each box in the CSS grid
+
 // generate a board randomly for each player
 const userBoard = new Board();
 const computerBoard = new Board();
@@ -70,3 +72,31 @@ console.log(userBoard.battleShips[3]);
 // user chooses 5 coordinates to fire at computer
 
 // allow user to reset board and restart game at any time
+
+// [row-start, row-end, column-start, column-end]
+// Carrier 
+// step 1: randomly choose horizontal or vertical
+// randomly choose a starting place between 0 and the x or y minus the ship length (depending on h or v)
+// ex carrier 5 spots
+// this.carrier.orientation = horizontal // randomly generated
+// if (horizontal) 
+// {
+// this.carrier.x_coordinate = Math.floor(Math.random(10 - length)) // 6
+// this.carrier.y_coordinate = random y; // 3
+// }
+
+// save in 2d array
+// shipLocation = [
+// [false, false, false, false, false, false, false, false, false, false]
+// [false, false, false, false, false, false, false, false, false, false]
+// [false, true,  true,  true,  true,  true,  false, false, false, false] // y = 3 (- 1)
+// [false, false, false, false, false, false, false, false, false, false]
+// [false, false, false, false, false, false, false, false, false, false]
+// [false, false, false, false, false, false, false, false, false, false] 
+// [false, false, false, false, false, false, false, false, false, false]
+// [false, false, false, false, false, false, false, false, false, false]
+// [false, false, false, false, false, false, false, false, false, false]
+// [false, false, false, false, false, false, false, false, false, false]
+//]
+
+// choose /y/ first then depending on horizontal or vertical loop through the length
