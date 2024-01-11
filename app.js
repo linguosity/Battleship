@@ -154,10 +154,19 @@ const placeShip = (whichShip) => {
 //testing if the placeShip function is working with real data in terminal only
 placeShip(userBoard.battleShips[0]);
 
-const checkHit = (playerGuess) => {
 
-    //loop through battleShips array to see if it's a hit in the player's board
+// pass checkHit function the coordinates in question (e.g. "5, 2") to see if there's a ship occupying the space??
+const checkHit = (playerGuess, randomShipLength) => {
 
+    //loop through battleShips array to see if there's already a ship or part of a ship occupying a space
+    //use current ship class x & y coordinates after running placeShip to check for obstruction
+    for (let i=0; i < randomShipLength; i++) {
+        if (playerGuess[0] === userBoard.battleShips.x_coordinate && playerGuess[1] === userBoard.battleShips.y_coordinate) {
+            return true;
+        } else {
+        return false;
+        }
+    }
 
 }
 
