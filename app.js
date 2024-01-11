@@ -11,36 +11,36 @@ class Board {
         this.battleShips = [
             this.carrier = {
                 orientation: '',
-                x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
-                y_coordinate: '', // 0 - 9
+                x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
+                y_coordinate: [], // 0 - 9
                 shipLength: 5,
                 image_url: ''
             },
             this.battleship = {
                 orientation: '',
-                x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
-                y_coordinate: '', // 0 - 9
+                x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
+                y_coordinate: [], // 0 - 9
                 shipLength: 4,
                 image_url: ''
             },
             this.submarine = {
                 orientation: '',
-                x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
-                y_coordinate: '', // 0 - 9
+                x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
+                y_coordinate: [], // 0 - 9
                 shipLength: 3,
                 image_url: ''
             },
             this.destroyer = {
                 orientation: '',
-                x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
-                y_coordinate: '', // 0 - 9
+                x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
+                y_coordinate: [], // 0 - 9
                 shipLength: 2,
                 image_url: ''
             },
             this.cruiser = {
                 orientation: '',
-                x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
-                y_coordinate: '', // 0 - 9
+                x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
+                y_coordinate: [], // 0 - 9
                 shipLength: 3,
                 image_url: ''
             }
@@ -98,7 +98,7 @@ let shipLocation = [
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
-[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace], // y = 3 (- 1)
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace], 
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
@@ -108,32 +108,57 @@ let shipLocation = [
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 ]
 
+//randomly places whichever ship you pass the function within the player's grid
 const placeShip = (whichShip) => {
     // 0 = vertical, 1 = horizontal
     let randomOrientation = Math.floor(2*Math.random());
     whichShip.orientation = whichOrientation[randomOrientation];
-    
+    console.log(whichShip.orientation);
     //get random ship's length
     let randomShipLength = whichShip.shipLength;
 
     // choose random spot in the array
     let random_x = Math.floor(11*Math.random());
     let random_y = Math.floor(11*Math.random());
-    //console.log(`X: ${random_x} and Y: ${random_y}`);
+    //console.log(`Original X: ${random_x} and Y: ${random_y}`);
 
-    //if the ship placement is horizontal loop through single arrays
-    if(whichShip.orientation === 'horizontal') {
-         // go through row or column
-        if(random_x > 10 - randomShipLength) {
-            //if ship goes beyond grid edge horizontally, line it up with the edge
+    if(whichShip.orientation === 'horizontal') { //if the ship placement is horizontal loop through single arrays
+   
+        if(random_x > 10 - randomShipLength) { //if ship goes beyond grid edge horizontally, line it up with the edge
+            
             random_x = 10 - randomShipLength;
+
         }
+
+        for (let i = 0; i < randomShipLength; i++) { //loop through the length of the ship along the horizontal axis to mark its location
+            shipLocation[random_y][random_x + i]=whichShip;
+            whichShip.x_coordinate.push(random_x + i);
+            whichShip.y_coordinate.push(random_y);
+        }
+    } else { //if the ship placement is vertical loop across arrays
+        
+        if(random_y > 10 - randomShipLength) {random_y = 10 - randomShipLength;}
+
         for (let i = 0; i < randomShipLength; i++) {
-            shipLocation[random_x][random_y + i]=whichShip;
+            shipLocation[random_y + i][random_x] = whichShip;
+            whichShip.x_coordinate.push(random_x);
+            whichShip.y_coordinate.push(random_y + i);
         }
+    
     }
+
+    console.log(shipLocation);
+    console.log(whichShip);
 }
 
-placeShip(userBoard.battleShips[3]);
+//testing if the placeShip function is working with real data in terminal only
+placeShip(userBoard.battleShips[0]);
+
+const checkHit = (playerGuess) => {
+
+    //loop through battleShips array to see if it's a hit in the player's board
+
+
+}
 
 
