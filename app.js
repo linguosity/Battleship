@@ -10,33 +10,38 @@ class Board {
     constructor(){
         this.battleShips = [
             this.carrier = {
-                orientation: 'horizontal',
+                orientation: '',
                 x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: '', // 0 - 9
+                shipLength: 5,
                 image_url: ''
             },
             this.battleship = {
-                orientation: 'horizontal',
+                orientation: '',
                 x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: '', // 0 - 9
+                shipLength: 4,
                 image_url: ''
             },
             this.submarine = {
-                orientation: 'horizontal',
+                orientation: '',
                 x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: '', // 0 - 9
+                shipLength: 3,
                 image_url: ''
             },
             this.destroyer = {
-                orientation: 'horizontal',
+                orientation: '',
                 x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: '', // 0 - 9
+                shipLength: 2,
                 image_url: ''
             },
             this.cruiser = {
-                orientation: 'horizontal',
+                orientation: '',
                 x_coordinate: '', // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: '', // 0 - 9
+                shipLength: 3,
                 image_url: ''
             }
         ]
@@ -55,11 +60,15 @@ class Board {
     }
 }
 
+const whichOrientation = ['horizontal', 'vertical'];
 //dynamically generate the html for each box in the CSS grid
 
 // generate a board randomly for each player
 const userBoard = new Board();
 const computerBoard = new Board();
+
+// define empty object
+const emptySpace = {};
 
 //randomize the board for the computer
 userBoard.chooseCoordinates();
@@ -85,18 +94,46 @@ console.log(userBoard.battleShips[3]);
 // this.carrier.y_coordinate = random y; // 3
 // }
 
-// save in 2d array
-// shipLocation = [
-// [false, false, false, false, false, false, false, false, false, false]
-// [false, false, false, false, false, false, false, false, false, false]
-// [false, true,  true,  true,  true,  true,  false, false, false, false] // y = 3 (- 1)
-// [false, false, false, false, false, false, false, false, false, false]
-// [false, false, false, false, false, false, false, false, false, false]
-// [false, false, false, false, false, false, false, false, false, false] 
-// [false, false, false, false, false, false, false, false, false, false]
-// [false, false, false, false, false, false, false, false, false, false]
-// [false, false, false, false, false, false, false, false, false, false]
-// [false, false, false, false, false, false, false, false, false, false]
-//]
+let shipLocation = [
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace], // y = 3 (- 1)
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+[emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+]
 
-// choose /y/ first then depending on horizontal or vertical loop through the length
+const placeShip = (whichShip) => {
+    // 0 = vertical, 1 = horizontal
+    let randomOrientation = Math.floor(2*Math.random());
+    whichShip.orientation = whichOrientation[randomOrientation];
+    
+    //get random ship's length
+    let randomShipLength = whichShip.shipLength;
+
+    // choose random spot in the array
+    let random_x = Math.floor(11*Math.random());
+    let random_y = Math.floor(11*Math.random());
+    //console.log(`X: ${random_x} and Y: ${random_y}`);
+
+    //if the ship placement is horizontal loop through single arrays
+    if(whichShip.orientation === 'horizontal') {
+         // go through row or column
+        if(random_x > 10 - randomShipLength) {
+            //if ship goes beyond grid edge horizontally, line it up with the edge
+            random_x = 10 - randomShipLength;
+        }
+        for (let i = 0; i < randomShipLength; i++) {
+            shipLocation[random_x][random_y + i]=whichShip;
+        }
+    }
+}
+
+placeShip(userBoard.battleShips[3]);
+
+
