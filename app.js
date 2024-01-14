@@ -170,6 +170,13 @@ const checkHit = (playerGuess, randomShipLength) => {
 
 }
 
+//toggleShip function for user to add battleship to a given cell in their board
+const toggleShip = (e) => {
+    e.preventDefault();
+
+    console.log(`${e.target.dataset.row} and ${e.target.dataset.column}`);
+}
+
 //write a function to generate cells within <div id="computer-grid" class "minimal"> using data variables for rows/columns
 for (let i=0; i<10; i++) {
     for (let y=0; y<10; y++) {
@@ -181,7 +188,7 @@ for (let i=0; i<10; i++) {
         gridCells.dataset.column = y;
 
         //add event listener to each 
-        gridCells.addEventListener();
+        gridCells.addEventListener("click", toggleShip);
     }
 }
 
