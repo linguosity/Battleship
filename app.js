@@ -195,28 +195,51 @@ const checkHit = (playerGuess, randomShipLength) => {
 const toggleShip = (e) => {
     e.preventDefault();
 
-    console.log(`${e.target.dataset.row} and ${e.target.dataset.column}`);
+    console.log(`Row and column are: ${e.target.dataset.row} and ${e.target.dataset.column}`);
 
-    for(let i=0; i < userShipChoice.shipLength; i++) {
+    //if orientation is set to horizontal fill the appropriate cells with grid span
+    //for(let i=0; i < userShipChoice.shipLength; i++) {
        e.target.innerHTML = userShipChoice.name;
-    }
+       e.target.style.backgroundColor = "blue";
+       e.target.style.gridColumn = parseInt(e.target.dataset.column,10) + 1 + ` / span ${userShipChoice.shipLength}`;
+       console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
+       e.target.style.zIndex = '20';
+    //}
+    console.log(userShipChoice.shipLength);
+    //if orientation is set to vertical fill the appropriate cells with grid span
     
 }
 
+//write a function to generate cells within <div id="user-grid" class "minimal"> using data variables for rows/columns
+for (let i=0; i<10; i++) {
+    for (let y=0; y<10; y++) {
+        let gridCells = document.createElement("div");
+        gridCells.innerHTML = y;
+        gridCells.style.zIndex = '0';
+        gridCells.style.gridRow = `${i+1} / span 1`;
+        gridCells.style.gridColumn = `${y+1} / span 1` ;
+        document.getElementById("user-grid").appendChild(gridCells);
+        gridCells.classList.add(`cell${i}`);
+        gridCells.dataset.row = i;
+        gridCells.dataset.column = y;
 
+        //add event listener to each to "attack"
+        gridCells.addEventListener("click", toggleShip);
+    }
+}
 
 //write a function to generate cells within <div id="computer-grid" class "minimal"> using data variables for rows/columns
 for (let i=0; i<10; i++) {
     for (let y=0; y<10; y++) {
         let gridCells = document.createElement("div");
         gridCells.innerHTML = y;
+        gridCells.zIndex = "0";
         document.getElementById("computer-grid").appendChild(gridCells);
         gridCells.classList.add(`cell${i}`);
         gridCells.dataset.row = i;
         gridCells.dataset.column = y;
 
-        //add event listener to each 
-        gridCells.addEventListener("click", toggleShip);
+        //add event listener to each to "attack"
     }
 }
 
@@ -232,11 +255,6 @@ const assignShip = (evt) => {
     //hold the choice of ship temporarily in a variable
     userShipChoice = userBoard.battleShips[shipID];
     console.log(userShipChoice.shipLength);
-
-    //loop through userShipLocation horizontally first
-    for (let i=0; i < userShipChoice.shipLength; i++){
-        userShipLocation[i]
-    }
 
 }
 
