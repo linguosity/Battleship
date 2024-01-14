@@ -197,16 +197,22 @@ const toggleShip = (e) => {
 
     console.log(`Row and column are: ${e.target.dataset.row} and ${e.target.dataset.column}`);
 
-    //if orientation is set to horizontal fill the appropriate cells with grid span
-    //for(let i=0; i < userShipChoice.shipLength; i++) {
+    if(userShipChoice.orientation === 'horizontal'){
+
        e.target.innerHTML = userShipChoice.name;
        e.target.style.backgroundColor = "blue";
-       e.target.style.gridColumn = parseInt(e.target.dataset.column,10) + 1 + ` / span ${userShipChoice.shipLength}`;
+       e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
        console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
        e.target.style.zIndex = '20';
-    //}
-    console.log(userShipChoice.shipLength);
-    //if orientation is set to vertical fill the appropriate cells with grid span
+    
+    } else {
+        e.target.innerHTML = userShipChoice.name;
+        e.target.style.backgroundColor = "blue";
+       e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
+       console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
+       e.target.style.zIndex = '20';
+
+    }
     
 }
 
