@@ -10,6 +10,7 @@ class Board {
     constructor(){
         this.battleShips = [
             this.carrier = {
+                name: 'carrier',
                 orientation: '',
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
@@ -17,6 +18,7 @@ class Board {
                 image_url: ''
             },
             this.battleship = {
+                name: 'battleship',
                 orientation: '',
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
@@ -24,6 +26,7 @@ class Board {
                 image_url: ''
             },
             this.submarine = {
+                name: 'submarine',
                 orientation: '',
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
@@ -31,6 +34,7 @@ class Board {
                 image_url: ''
             },
             this.destroyer = {
+                name: 'destroyer',
                 orientation: '',
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
@@ -38,6 +42,7 @@ class Board {
                 image_url: ''
             },
             this.cruiser = {
+                name: 'cruiser',
                 orientation: '',
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
@@ -95,6 +100,20 @@ console.log(userBoard.battleShips[3]);
 // }
 
 let shipLocation = [
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace], 
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+    [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
+]
+
+let userShipLocation = [
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
@@ -170,12 +189,21 @@ const checkHit = (playerGuess, randomShipLength) => {
 
 }
 
+
+//place user ship horizontally or vertically using the clicked cell as the starting point
 //toggleShip function for user to add battleship to a given cell in their board
 const toggleShip = (e) => {
     e.preventDefault();
 
     console.log(`${e.target.dataset.row} and ${e.target.dataset.column}`);
+
+    for(let i=0; i < userShipChoice.shipLength; i++) {
+       e.target.innerHTML = userShipChoice.name;
+    }
+    
 }
+
+
 
 //write a function to generate cells within <div id="computer-grid" class "minimal"> using data variables for rows/columns
 for (let i=0; i<10; i++) {
@@ -192,6 +220,41 @@ for (let i=0; i<10; i++) {
     }
 }
 
+//let userShipChoice = {};
 
+//allow user to queu up shipChoice
+const assignShip = (evt) => {
+    evt.preventDefault();
 
+    //save name of ship choice
+    let shipID = evt.target.dataset.name;
+
+    //hold the choice of ship temporarily in a variable
+    userShipChoice = userBoard.battleShips[shipID];
+    console.log(userShipChoice.shipLength);
+
+    //loop through userShipLocation horizontally first
+    for (let i=0; i < userShipChoice.shipLength; i++){
+        userShipLocation[i]
+    }
+
+}
+
+//add event listeners to each ship div in the "harbor"
+const carrierDiv = document.getElementById("carrier");
+carrierDiv.dataset.name = 0;
+const battleshipDiv = document.getElementById("battleship");
+battleshipDiv.dataset.name = 1;
+const submarineDiv = document.getElementById("submarine");
+submarineDiv.dataset.name = 2;
+const destroyerDiv = document.getElementById("destroyer");
+destroyerDiv.dataset.name = 3;
+const cruiserDiv = document.getElementById("cruiser");
+cruiserDiv.dataset.name = 4;
+
+carrierDiv.addEventListener("click", assignShip);
+battleshipDiv.addEventListener("click", assignShip);
+submarineDiv.addEventListener("click", assignShip);
+destroyerDiv.addEventListener("click", assignShip);
+cruiserDiv.addEventListener("click", assignShip);
 
