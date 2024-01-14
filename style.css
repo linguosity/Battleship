@@ -1,3 +1,22 @@
+/*
+* {
+    box-sizing: border-box;
+    position:relative;
+    min-width: 0;
+}
+
+body {
+    min-height: 100dvh;
+}
+h1, h2, h3, h4 {
+    text-wrap: balance;
+}
+p {
+    text-wrap: pretty;
+}
+*/
+
+
 body, html {
     margin: auto 0;
     padding: 0;
@@ -115,7 +134,7 @@ footer {
 .minimal {
     border-radius: 8px;
 }
-
+/*
 .cell1 {
     grid-area: 8 / 1/ 11 / 1;
     background-color: aliceblue;
@@ -144,4 +163,4 @@ footer {
     grid-area: 5 / 1/ 5 / 1;
     background-color: antiquewhite;
 }
-
+*/

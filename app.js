@@ -170,4 +170,21 @@ const checkHit = (playerGuess, randomShipLength) => {
 
 }
 
+//write a function to generate cells within <div id="computer-grid" class "minimal"> using data variables for rows/columns
+for (let i=0; i<10; i++) {
+    for (let y=0; y<10; y++) {
+        let gridCells = document.createElement("div");
+        gridCells.innerHTML = y;
+        document.getElementById("computer-grid").appendChild(gridCells);
+        gridCells.classList.add(`cell${i}`);
+        gridCells.dataset.row = i;
+        gridCells.dataset.column = y;
+
+        //add event listener to each 
+        gridCells.addEventListener();
+    }
+}
+
+
+
 
