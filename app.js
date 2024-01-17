@@ -75,13 +75,46 @@ const computerBoard = new Board();
 // define empty object
 const emptySpace = {};
 
-// allow the user to manually choose their coordinates in order by ship
+//create array of shipChoices the user chooses
+let shipsChosen = [];
 
-// signal to user that they may begin the first round 
+//allow user to queu up shipChoice
+const assignShip = (evt) => {
 
-// user chooses 5 coordinates to fire at computer
+    //push user's choice to an array to track which ships they've clicked on and presumedly placed & do not repeat ships
+   //if(shipsChosen.includes(evt.target.innerHTML) !== true) {
+        evt.preventDefault();
 
-// allow user to reset board and restart game at any time
+        //save name of ship choice
+        let shipID = evt.target.dataset.name;
+
+        //hold the choice of ship temporarily in a variable
+        userShipChoice = userBoard.battleShips[shipID];
+    
+        shipsChosen.push(evt.target.innerHTML);
+
+        console.log("These are the ships already chosen: " + shipsChosen);
+    //}
+    
+}
+
+//add event listeners to each ship div in the "harbor"
+const carrierDiv = document.getElementById("carrier");
+carrierDiv.dataset.name = 0;
+const battleshipDiv = document.getElementById("battleship");
+battleshipDiv.dataset.name = 1;
+const submarineDiv = document.getElementById("submarine");
+submarineDiv.dataset.name = 2;
+const destroyerDiv = document.getElementById("destroyer");
+destroyerDiv.dataset.name = 3;
+const cruiserDiv = document.getElementById("cruiser");
+cruiserDiv.dataset.name = 4;
+
+carrierDiv.addEventListener("click", assignShip);
+battleshipDiv.addEventListener("click", assignShip);
+submarineDiv.addEventListener("click", assignShip);
+destroyerDiv.addEventListener("click", assignShip);
+cruiserDiv.addEventListener("click", assignShip);
 
 let shipLocation = [
     [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
@@ -96,6 +129,7 @@ let shipLocation = [
     [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
     [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 ]
+console.log(shipLocation);
 
 let userShipLocation = [
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
@@ -111,12 +145,11 @@ let userShipLocation = [
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 ]
 
-//randomly places whichever ship you pass the function within the player's grid
+//randomly places whichever ship you pass the function within the player's grid (for computer board)
 const placeShip = (whichShip) => {
     // 0 = vertical, 1 = horizontal
     let randomOrientation = Math.floor(2*Math.random());
     whichShip.orientation = whichOrientation[randomOrientation];
-    console.log(whichShip.orientation);
     //get random ship's length
     let randomShipLength = whichShip.shipLength;
 
@@ -149,10 +182,10 @@ const placeShip = (whichShip) => {
         }
     
     }
-
     console.log(shipLocation);
-    console.log(whichShip);
 }
+
+placeShip(computerBoard.battleShips[0]);
 
 // pass checkHit function the coordinates in question (e.g. "5, 2") to see if there's a ship occupying the space??
 const checkHit = (playerGuess, randomShipLength) => {
@@ -171,83 +204,88 @@ const checkHit = (playerGuess, randomShipLength) => {
 
 //clear user grid by iterating over each child div to delete
 const clearUserGrid = () => {
- 
+    console.log("clear grid");
     let userGridDiv = document.querySelector('#user-grid');
     let cellArray = userGridDiv.querySelectorAll('div');
     cellArray.forEach((cell) => {
-        cell.style.gridRow = parseInt(cell.dataset.row, 10) + 1 + ` / span 1`;
-        cell.style.gridColumn = parseInt(cell.dataset.column, 10) + 1 + ` / span 1`;
-        console.log(cell);
-        cell.style.backgroundColor= 'yellow';
-        cell.innerHTML = cell.dataset.column;
-        cell.style.zIndex=0;
+        if(shipsChosen[shipsChosen.length-1] === cell.innerHTML) 
+        {
+            console.log(shipsChosen[shipsChosen.length-1]);
+            cell.style.gridRow = parseInt(cell.dataset.row, 10) + 1 + ` / span 1`;
+            cell.style.gridColumn = parseInt(cell.dataset.column, 10) + 1 + ` / span 1`;
+            cell.style.backgroundColor= 'yellow';
+            cell.innerHTML = cell.dataset.column;
+            cell.style.zIndex=0;
+        }
     })
+}
 
+//check if grid cells already have a ship placed
+
+const placeHorizontal = (e) => {
+
+        e.target.innerHTML = userShipChoice.name;
+        e.target.style.backgroundColor = "blue";
+        //change the horizontal span of cell to match length of ship across cells
+        e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
+        console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
+        e.target.style.zIndex = '20';
+
+        //set orientation to horizontal to follow toggle logic on second click
+        userShipChoice.orientation = 'horizontal';
+
+        //"clear" vertical ship placement
+        e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span 1`;
+
+        //set DOM variable for each cell 'hasShip' to true to set up clear function
+        e.target.dataset.hasShip = true;
+        e.target.dataset.whichShip = userShipChoice.name;
+    
+}
+
+const placeVertical = (e) => {
+
+    e.target.innerHTML = userShipChoice.name;
+                e.target.style.backgroundColor = "blue";
+                //change the vertical span of cell to match length of ship across cells
+                e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
+                e.target.style.zIndex = '20';
+
+                //set orientation to horizontal to follow toggle logic on second click
+                userShipChoice.orientation = 'vertical';
+
+                //"clear" vertical ship placement
+                e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span 1`;
+
+                //set DOM variable for each cell 'hasShip' to true to set up clear function
+                e.target.dataset.hasShip = true;
+                e.target.dataset.whichShip = userShipChoice.name;
 }
 
 //place user ship horizontally or vertically using the clicked cell as the starting point
 //toggleShip function for user to add battleship to a given cell in their board
 // if the user is placing the same ship in a different location on the board, erase the previous placement or reset board
 const toggleShip = (e) => {
-    e.preventDefault();
 
-    console.log(`Row and column are: ${e.target.dataset.row} and ${e.target.dataset.column}`);
-    console.log("originally the orientation of ship is" + userShipChoice.orientation)
+        e.preventDefault();
 
-    if(e.target.dataset.hasShip === 'false'){
         clearUserGrid();
-        console.log("The userShipchoice name is: " + userShipChoice.name);
-        console.log("The user also clicked on " + e.target.innerHTML);
-    }
     
-    if(userShipChoice.orientation === '' || userShipChoice.orientation === 'vertical'){
-        console.log("Ship is horizontal");
-        //clear grid
+        console.log("Shipschosen are: " + shipsChosen.includes(userShipChoice.name) + "and userShipChoice.name is:" + userShipChoice.name);
 
-       e.target.innerHTML = userShipChoice.name;
-       e.target.style.backgroundColor = "blue";
-       //change the horizontal span of cell to match length of ship across cells
-       e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
-       console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
-       e.target.style.zIndex = '20';
+        if(userShipChoice.orientation === '' || userShipChoice.orientation === 'vertical'){
+            
+            //if(!doesShipBlockHorizontalPlacement()) {
+            placeHorizontal(e);
+            //}
 
-       //set orientation to horizontal to follow toggle logic on second click
-       userShipChoice.orientation = 'horizontal';
-
-       //"clear" vertical ship placement
-       e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span 1`;
-       console.log(`This is the gridRow: ${e.target.style.gridRow}`);
-       console.log(`Now this is the gridColumn: ${e.target.style.gridRow}`);
-
-       //set DOM variable for each cell 'hasShip' to true to set up clear function
-       e.target.dataset.hasShip = true;
-       console.log("This cell has a ship: " + e.target.dataset.hasShip);
-
-    
-    } else {
-        //clear grid
+        } else {
+            
+            //if(!doesShipBlockVerticalPlacement()) {
+            placeVertical(e);
+            //}
+        }
         
-        console.log("Ship is vertical");
-        e.target.innerHTML = userShipChoice.name;
-        e.target.style.backgroundColor = "blue";
-        //change the vertical span of cell to match length of ship across cells
-        e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
-        console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
-        e.target.style.zIndex = '20';
-
-        //set orientation to horizontal to follow toggle logic on second click
-       userShipChoice.orientation = 'vertical';
-
-        //"clear" vertical ship placement
-       e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span 1`;
-        console.log(`Now this is the gridColumn: ${e.target.style.gridRow}`);
-
-        //set DOM variable for each cell 'hasShip' to true to set up clear function
-       e.target.dataset.hasShip = true;
-
-    
-    }
-    
 }
 
 const writeUserGridHTML = () => {
@@ -266,6 +304,7 @@ const writeUserGridHTML = () => {
             gridCells.dataset.row = i;
             gridCells.dataset.column = y;
             gridCells.dataset.hasShip = false;
+            gridCells.dataset.whichShip = '';
 
             //add event listener to each to "attack"
             gridCells.addEventListener("click", toggleShip);
@@ -293,35 +332,12 @@ for (let i=0; i<10; i++) {
 
 //let userShipChoice = {};
 
-//allow user to queu up shipChoice
-const assignShip = (evt) => {
-    evt.preventDefault();
 
-    //save name of ship choice
-    let shipID = evt.target.dataset.name;
+// allow the user to manually choose their coordinates in order by ship
 
-    //hold the choice of ship temporarily in a variable
-    userShipChoice = userBoard.battleShips[shipID];
-    console.log(userShipChoice.shipLength);
-    console.log(userShipChoice.name);
+// signal to user that they may begin the first round 
 
-}
+// user chooses 5 coordinates to fire at computer
 
-//add event listeners to each ship div in the "harbor"
-const carrierDiv = document.getElementById("carrier");
-carrierDiv.dataset.name = 0;
-const battleshipDiv = document.getElementById("battleship");
-battleshipDiv.dataset.name = 1;
-const submarineDiv = document.getElementById("submarine");
-submarineDiv.dataset.name = 2;
-const destroyerDiv = document.getElementById("destroyer");
-destroyerDiv.dataset.name = 3;
-const cruiserDiv = document.getElementById("cruiser");
-cruiserDiv.dataset.name = 4;
-
-carrierDiv.addEventListener("click", assignShip);
-battleshipDiv.addEventListener("click", assignShip);
-submarineDiv.addEventListener("click", assignShip);
-destroyerDiv.addEventListener("click", assignShip);
-cruiserDiv.addEventListener("click", assignShip);
+// allow user to reset board and restart game at any time
 
