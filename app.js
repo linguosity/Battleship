@@ -223,7 +223,7 @@ const clearUserGrid = () => {
 //check if grid cells already have a ship placed
 
 const placeHorizontal = (e) => {
-
+        
         e.target.innerHTML = userShipChoice.name;
         e.target.style.backgroundColor = "blue";
         //change the horizontal span of cell to match length of ship across cells
@@ -237,29 +237,51 @@ const placeHorizontal = (e) => {
         //"clear" vertical ship placement
         e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span 1`;
 
+
         //set DOM variable for each cell 'hasShip' to true to set up clear function
         e.target.dataset.hasShip = true;
         e.target.dataset.whichShip = userShipChoice.name;
-    
+
+        //clear x/y coordinates
+        userShipChoice.x_coordinate = [];
+        userShipChoice.y_coordinate = [];
+
+        //add location to array
+        for (let i = 0; i < userShipChoice.shipLength; i++) { //loop through the length of the ship along the horizontal axis to mark its location
+            userShipLocation[e.target.dataset.column][parseInt(e.target.dataset.row, 10) + i] = userShipChoice.name;
+            userShipChoice.y_coordinate.push(parseInt(e.target.dataset.column, 10));
+            userShipChoice.x_coordinate.push(parseInt(e.target.dataset.row, 10) + i);
+        }
 }
 
 const placeVertical = (e) => {
 
     e.target.innerHTML = userShipChoice.name;
-                e.target.style.backgroundColor = "blue";
-                //change the vertical span of cell to match length of ship across cells
-                e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
-                e.target.style.zIndex = '20';
+    e.target.style.backgroundColor = "blue";
+    //change the vertical span of cell to match length of ship across cells
+    e.target.style.gridRow = parseInt(e.target.dataset.row, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
+    e.target.style.zIndex = '20';
 
-                //set orientation to horizontal to follow toggle logic on second click
-                userShipChoice.orientation = 'vertical';
+    //set orientation to horizontal to follow toggle logic on second click
+    userShipChoice.orientation = 'vertical';
 
-                //"clear" vertical ship placement
-                e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span 1`;
+    //"clear" vertical ship placement
+    e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span 1`;
 
-                //set DOM variable for each cell 'hasShip' to true to set up clear function
-                e.target.dataset.hasShip = true;
-                e.target.dataset.whichShip = userShipChoice.name;
+    //set DOM variable for each cell 'hasShip' to true to set up clear function
+    e.target.dataset.hasShip = true;
+    e.target.dataset.whichShip = userShipChoice.name;
+
+    //clear x/y coordinates
+    userShipChoice.x_coordinate = [];
+    userShipChoice.y_coordinate = [];
+
+    //add location to array
+    for (let i = 0; i < userShipChoice.shipLength; i++) { //loop through the length of the ship along the horizontal axis to mark its location
+        userShipLocation[parseInt(e.target.dataset.column, 10) + i][e.target.dataset.row] = userShipChoice.name;
+        userShipChoice.y_coordinate.push(parseInt(e.target.dataset.column, 10) + i);
+        userShipChoice.x_coordinate.push(parseInt(e.target.dataset.row, 10));
+    }
 }
 
 //place user ship horizontally or vertically using the clicked cell as the starting point
@@ -285,6 +307,8 @@ const toggleShip = (e) => {
             placeVertical(e);
             //}
         }
+
+        console.log(userBoard.battleShips);
         
 }
 
