@@ -339,23 +339,55 @@ const writeUserGridHTML = () => {
 
 writeUserGridHTML();
 
-//write a function to generate cells within <div id="computer-grid" class "minimal"> using data variables for rows/columns
-for (let i=0; i<10; i++) {
-    for (let y=0; y<10; y++) {
-        let gridCells = document.createElement("div");
-        gridCells.innerHTML = y;
-        gridCells.zIndex = "0";
-        document.getElementById("computer-grid").appendChild(gridCells);
-        gridCells.classList.add(`cell${i}`);
-        gridCells.dataset.row = i;
-        gridCells.dataset.column = y;
+//create array that tracks the placement of bombs and only allows 5, if more than 5 it deletes the last one
+let bombSet = [];
 
-        //add event listener to each to "attack"
+const bombCells = (e) => {
+    let computerGridDiv = document.querySelector('#computer-grid');
+    let cellArray = computerGridDiv.querySelectorAll('div');
+
+    if(bombSet.length < 5) {
+        bombSet.push([e.target.dataset.row, e.target.dataset.column])
+        e.target.innerHTML = "b";
+        console.log(bombSet);
+    } else {
+        let firstBomb = parseInt(bombSet[0][0]*10,10) + parseInt(bombSet[0][1],10);
+        console.log("firstbomb is " + firstBomb);
+        cellArray[firstBomb].innerHTML = bombSet[0][0];
+        bombSet.shift();
+        bombSet.push([e.target.dataset.row, e.target.dataset.column])
     }
+
+    console.log(cellArray[0]);
+
 }
 
-//let userShipChoice = {};
+const writeComputerGridHMTL = () => {
 
+    //write a function to generate cells within <div id="computer-grid" class "minimal"> using data variables for rows/columns
+    for (let i=0; i<10; i++) {
+        for (let y=0; y<10; y++) {
+            let gridCells = document.createElement("div");
+            gridCells.innerHTML = y;
+            gridCells.zIndex = "0";
+            document.getElementById("computer-grid").appendChild(gridCells);
+            gridCells.classList.add(`cell${i}`);
+            gridCells.dataset.row = i;
+            gridCells.dataset.column = y;
+
+            gridCells.addEventListener("click", bombCells);
+            //add event listener to each to "attack"
+        }
+    }
+
+}
+
+writeComputerGridHMTL();
+
+
+
+
+//let userShipChoice = {};
 
 // allow the user to manually choose their coordinates in order by ship
 
@@ -365,3 +397,4 @@ for (let i=0; i<10; i++) {
 
 // allow user to reset board and restart game at any time
 
+// add event listener to "fire" button to check to see if there's a hit
