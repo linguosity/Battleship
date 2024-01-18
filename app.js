@@ -348,7 +348,7 @@ const bombCells = (e) => {
 
     if(bombSet.length < 5) {
         bombSet.push([e.target.dataset.row, e.target.dataset.column])
-        e.target.innerHTML = "b";
+        e.target.innerHTML = `<img src="/source/battleship.png">`;
         console.log(bombSet);
     } else {
         let firstBomb = parseInt(bombSet[0][0]*10,10) + parseInt(bombSet[0][1],10);
