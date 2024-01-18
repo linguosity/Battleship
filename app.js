@@ -354,21 +354,14 @@ let bombSet = [];
 
 const detonateBombs = (bombSet) => {
 
-    /*check shipLocation with bombSet to see if there's a hit
-    for(let i=0; i < shipLocation.length; i++) {
-        for(let n=0; n < shipLocation[i].length; n++) {
-            for(let m=0; m < bombSet.length; m++) {
-                if(bombSet[m][0] && bombSet[m])
-            }
-        }
-    }*/
-    // loop through computer's battleship array to see if the x and y coordinates match
     for(let i=0; i < computerBoard.battleShips.length; i++) {
-        for(let m=0; m < computerBoard.battleShips[0].length; m++) {
+      
+        for(let m=0; m < computerBoard.battleShips[i].shipLength; m++) {
+            
             for(let n=0; n < bombSet.length; n++) {
-                if(bombSet[n][0] === computerBoard.battleShips[0].x_coordinate[m] && bombSet[n][1] === computerBoard.battleShips[0].y_coordinate[m]){
-                    console.log("it's a hit");
-                }
+                if(bombSet[n][0] === computerBoard.battleShips[i].y_coordinate[m] && bombSet[n][1] === computerBoard.battleShips[i].x_coordinate[m]){
+                    console.log(`Bombset n0 is: ${bombSet[n][0]} and xcoord is: ${computerBoard.battleShips[i].y_coordinate[m]} but bombset n1 is: ${bombSet[n][1]} and ycoord is: ${computerBoard.battleShips[i].x_coordinate[m]} ."`); // check x and y coordinates, they appear to be backwards
+                } // 0,4 0,3 0,2 0,1 0,0 == x-4,y-0 
             }
         }
     }
