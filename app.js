@@ -15,7 +15,8 @@ class Board {
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
                 shipLength: 5,
-                image_url: ''
+                image_url: '',
+                isSunk: false,
             },
             this.battleship = {
                 name: 'battleship',
@@ -23,7 +24,9 @@ class Board {
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
                 shipLength: 4,
-                image_url: ''
+                image_url: '',
+                isSunk: false,
+            
             },
             this.submarine = {
                 name: 'submarine',
@@ -31,7 +34,8 @@ class Board {
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
                 shipLength: 3,
-                image_url: ''
+                image_url: '',
+                isSunk:false,
             },
             this.destroyer = {
                 name: 'destroyer',
@@ -39,7 +43,9 @@ class Board {
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
                 shipLength: 2,
-                image_url: ''
+                image_url: '',
+                isSunk: false,
+            
             },
             this.cruiser = {
                 name: 'cruiser',
@@ -47,7 +53,8 @@ class Board {
                 x_coordinate: [], // 0 - 9 (limited by size depending on orientation)
                 y_coordinate: [], // 0 - 9
                 shipLength: 3,
-                image_url: ''
+                image_url: '',
+                isSunk:false,
             }
         ]
     }
@@ -129,7 +136,6 @@ let shipLocation = [
     [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
     [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
 ]
-console.log(shipLocation);
 
 let userShipLocation = [
 [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
@@ -182,10 +188,14 @@ const placeShip = (whichShip) => {
         }
     
     }
-    console.log(shipLocation);
+    //console.log(shipLocation);
 }
 
 placeShip(computerBoard.battleShips[0]);
+placeShip(computerBoard.battleShips[1]);
+placeShip(computerBoard.battleShips[2]);
+placeShip(computerBoard.battleShips[3]);
+placeShip(computerBoard.battleShips[4]);
 
 // pass checkHit function the coordinates in question (e.g. "5, 2") to see if there's a ship occupying the space??
 const checkHit = (playerGuess, randomShipLength) => {
@@ -204,7 +214,7 @@ const checkHit = (playerGuess, randomShipLength) => {
 
 //clear user grid by iterating over each child div to delete
 const clearUserGrid = () => {
-    console.log("clear grid");
+    console.log("clear user grid");
     let userGridDiv = document.querySelector('#user-grid');
     let cellArray = userGridDiv.querySelectorAll('div');
     cellArray.forEach((cell) => {
@@ -342,24 +352,49 @@ writeUserGridHTML();
 //create array that tracks the placement of bombs and only allows 5, if more than 5 it deletes the last one
 let bombSet = [];
 
+const detonateBombs = (bombSet) => {
+
+    /*check shipLocation with bombSet to see if there's a hit
+    for(let i=0; i < shipLocation.length; i++) {
+        for(let n=0; n < shipLocation[i].length; n++) {
+            for(let m=0; m < bombSet.length; m++) {
+                if(bombSet[m][0] && bombSet[m])
+            }
+        }
+    }*/
+    // loop through computer's battleship array to see if the x and y coordinates match
+    for(let i=0; i < computerBoard.battleShips.length; i++) {
+        for(let m=0; m < computerBoard.battleShips[0].length; m++) {
+            for(let n=0; n < bombSet.length; n++) {
+                if(bombSet[n][0] === computerBoard.battleShips[0].x_coordinate[m] && bombSet[n][1] === computerBoard.battleShips[0].y_coordinate[m]){
+                    console.log("it's a hit");
+                }
+            }
+        }
+    }
+}
+
 const bombCells = (e) => {
     let computerGridDiv = document.querySelector('#computer-grid');
     let cellArray = computerGridDiv.querySelectorAll('div');
 
     if(bombSet.length < 5) {
-        bombSet.push([e.target.dataset.row, e.target.dataset.column])
-        e.target.innerHTML = `<img src="/source/battleship.png">`;
-        console.log(bombSet);
+        bombSet.push([parseInt(e.target.dataset.row, 10), parseInt(e.target.dataset.column, 10)])
+        e.target.innerHTML = `<img class="grid-bombs" src="/source/bomb.png">`;
+        
     } else {
-        let firstBomb = parseInt(bombSet[0][0]*10,10) + parseInt(bombSet[0][1],10);
+        let firstBomb = parseInt(bombSet[0][0]*10, 10) + parseInt(bombSet[0][1], 10);
         console.log("firstbomb is " + firstBomb);
         cellArray[firstBomb].innerHTML = bombSet[0][0];
         bombSet.shift();
-        bombSet.push([e.target.dataset.row, e.target.dataset.column])
+        bombSet.push([parseInt(e.target.dataset.row, 10), parseInt(e.target.dataset.column, 10)])
+        e.target.innerHTML = `<img class="grid-bombs" src="/source/bomb.png">`;
+
+        console.log(bombSet);
+
+        //add event listener to "fire" button to call detonate function
+        detonateBombs(bombSet);
     }
-
-    console.log(cellArray[0]);
-
 }
 
 const writeComputerGridHMTL = () => {
@@ -384,8 +419,11 @@ const writeComputerGridHMTL = () => {
 
 writeComputerGridHMTL();
 
+console.log(shipLocation);
 
 
+
+// 
 
 //let userShipChoice = {};
 
