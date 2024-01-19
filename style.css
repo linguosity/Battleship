@@ -72,6 +72,10 @@ body {
     background-color: aquamarine;
 }
 
+#fire-button img {
+    width:100%;
+}
+
 main {
     
     height:100%;

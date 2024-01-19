@@ -82,6 +82,13 @@ const computerBoard = new Board();
 // define empty object
 const emptySpace = {};
 
+//create fire button to add event listener
+const fireButton = document.querySelector('#fire-button');
+console.log(fireButton);
+
+//
+const gameNews = document.querySelector('#announcements');
+
 //create array of shipChoices the user chooses
 let shipsChosen = [];
 
@@ -351,19 +358,25 @@ writeUserGridHTML();
 
 //create array that tracks the placement of bombs and only allows 5, if more than 5 it deletes the last one
 let bombSet = [];
+let successfulHit = false;
 
 const detonateBombs = (bombSet) => {
-
+    console.log("hello");
     for(let i=0; i < computerBoard.battleShips.length; i++) {
       
         for(let m=0; m < computerBoard.battleShips[i].shipLength; m++) {
             
             for(let n=0; n < bombSet.length; n++) {
                 if(bombSet[n][0] === computerBoard.battleShips[i].y_coordinate[m] && bombSet[n][1] === computerBoard.battleShips[i].x_coordinate[m]){
-                    console.log(`Bombset n0 is: ${bombSet[n][0]} and xcoord is: ${computerBoard.battleShips[i].y_coordinate[m]} but bombset n1 is: ${bombSet[n][1]} and ycoord is: ${computerBoard.battleShips[i].x_coordinate[m]} ."`); // check x and y coordinates, they appear to be backwards
+                    gameNews.innerHTML = gameNews.innerHTML + `You hit the ${computerBoard.battleShips[i].name} at ${computerBoard.battleShips[i].y_coordinate[m]},${computerBoard.battleShips[i].x_coordinate[m]} ."`; // check x and y coordinates, they appear to be backwards
+                    successfulHit = true;
+                    
                 } // 0,4 0,3 0,2 0,1 0,0 == x-4,y-0 
             }
         }
+    }
+    if(successfulHit === false){
+        gameNews.innerHTML = 'Sorry no hit!';
     }
 }
 
@@ -372,21 +385,19 @@ const bombCells = (e) => {
     let cellArray = computerGridDiv.querySelectorAll('div');
 
     if(bombSet.length < 5) {
-        bombSet.push([parseInt(e.target.dataset.row, 10), parseInt(e.target.dataset.column, 10)])
+        bombSet.push([parseInt(e.target.dataset.row, 10), parseInt(e.target.dataset.column, 10)]);
         e.target.innerHTML = `<img class="grid-bombs" src="/source/bomb.png">`;
         
     } else {
         let firstBomb = parseInt(bombSet[0][0]*10, 10) + parseInt(bombSet[0][1], 10);
-        console.log("firstbomb is " + firstBomb);
-        cellArray[firstBomb].innerHTML = bombSet[0][0];
+        cellArray[firstBomb].innerHTML = bombSet[0][1];
         bombSet.shift();
         bombSet.push([parseInt(e.target.dataset.row, 10), parseInt(e.target.dataset.column, 10)])
         e.target.innerHTML = `<img class="grid-bombs" src="/source/bomb.png">`;
 
-        console.log(bombSet);
-
         //add event listener to "fire" button to call detonate function
-        detonateBombs(bombSet);
+        //detonateBombs(bombSet);
+        fireButton.addEventListener("click", () => detonateBombs(bombSet));
     }
 }
 
