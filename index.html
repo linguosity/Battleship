@@ -8,9 +8,6 @@
     
 </head>
 <body>
-    <aside id="side-menu" class="minimal"> 
-        Menu
-    </aside>
     <main> 
         <div id="header">
             <div id="title" class="minimal"> <!-- 'Game title' -->
@@ -26,14 +23,17 @@
             </div>
             <div id="deploy-forces"><img src="/source/deploy-forces.png" width="150px"></div>
             <div id="defend-forces"><img src="/source/defend-forces.png"></div>
+            <div id="graveYard" class="minimal"><!-- User graveyard-->
+                graveyard
+            </div>
         </div>
         <div id="boards">
             
             <div id="user-grid" class="minimal"> <!-- User grid 10x10 -->
             </div>
             <div id="computer-grid" class="minimal"><!-- Computer grid 10x10 -->
-                
             </div>
+            
         </div>
         <div id="ship-catalogue" >
             <div id="harbor" class="minimal"><!-- User harbor -->
@@ -43,9 +43,7 @@
                 <div id="destroyer" data-ship-name="destroyer">destroyer<img src="/source/destroyer.png"></div>
                 <div id="cruiser" data-ship-name="cruiser">cruiser<img src="/source/cruiser.png"></div>
             </div>
-            <div id="graveYard" class="minimal"><!-- User graveyard-->
-                graveyard
-            </div>
+            
         </div>
     </main>
     <script src="app.js"></script>
