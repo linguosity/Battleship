@@ -92,6 +92,7 @@ let fireButton = document.querySelector('#fire-button');
 const gameNews = document.querySelector('#announcements');
 const deployButton = document.querySelector('#deploy-forces');
 const defendButton = document.querySelector('#defend-forces');
+const graveYard = document.querySelector('graveYard');
 
 //create array of shipChoices the user chooses
 let shipsChosen = [];
