@@ -2,10 +2,10 @@
 
 Play against the computer in this classic Battleship game in 8-bit glory with a twist. Each player is allotted 5 attacks per turn BUT the damage coordinates are not revealed. Good luck!
 
-<a href="https://www.example.com](https://github.com/linguosity/Battleship">Visit Example.com</a>
+<a href="https://github.com/linguosity/Battleship">Repo/a>
 
 
-<a href="https://www.example.com](https://linguosity.github.io/Battleship/">Visit Example.com</a>
+<a href="https://linguosity.github.io/Battleship/">Game</a>
 
 
 Built With
