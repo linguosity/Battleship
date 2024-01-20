@@ -20,9 +20,6 @@ p {
     src: url('source/PressStart2P-Regular.ttf') format('truetype');
   }
   
- 
-  
-
 body, html {
     margin: auto 0;
     padding: 0;
@@ -38,8 +35,6 @@ body {
     width:100vw;
     box-sizing: border-box;
     padding: 1%;
-    background-color: white;
-
 }
 
 #side-menu {
@@ -57,7 +52,7 @@ body {
 
 #control-panel {
     grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-end: 2;
     grid-row-start: 3;
     grid-row-end: 4;
 
@@ -98,8 +93,20 @@ body {
 
 #fire-button {
     height:20%;
-    width:20%;
+    width:50%;
     background-color: aquamarine;
+}
+#deploy-forces {
+    width:50%;
+}
+#deploy-forces img{
+    width:100%;
+}
+#defend-forces {
+    width:50%;
+}
+#defend-forces img {
+    width:100%;
 }
 
 #fire-button img {
@@ -190,13 +197,18 @@ footer {
     margin: 0 auto;
     align-content: center;
     width:100%;
-    height:15%;
+    height:100%;
 }
 
 #harbor {
     width:50%;
-    background-color: azure;
+    background-color: #408393;
     height: 100%;
+    color:white;
+}
+
+#defend-forces {
+    color:white;
 }
 
 #graveYard {
