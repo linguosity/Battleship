@@ -17,7 +17,7 @@ class Board {
                 shipLength: 5,
                 image_url: '',
                 isSunk: false,
-                damage: [false, false, false, false, false]
+                damage: 0,
             },
             this.battleship = {
                 name: 'battleship',
@@ -27,7 +27,7 @@ class Board {
                 shipLength: 4,
                 image_url: '',
                 isSunk: false,
-                damage: [false, false, false, false]
+                damage: 0,
             
             },
             this.submarine = {
@@ -37,8 +37,8 @@ class Board {
                 y_coordinate: [], // 0 - 9
                 shipLength: 3,
                 image_url: '',
-                isSunk:false,
-                damage: [false, false, false]
+                isSunk: false,
+                damage: 0,
             },
             this.destroyer = {
                 name: 'destroyer',
@@ -48,7 +48,7 @@ class Board {
                 shipLength: 2,
                 image_url: '',
                 isSunk: false,
-                damage: [false, false]
+                damage: 0,
             
             },
             this.cruiser = {
@@ -58,8 +58,8 @@ class Board {
                 y_coordinate: [], // 0 - 9
                 shipLength: 3,
                 image_url: '',
-                isSunk:false,
-                damage: [false, false, false]
+                isSunk: false,
+                damage: 0,
             }
         ]
     }
@@ -88,7 +88,7 @@ const computerBoard = new Board();
 const emptySpace = {};
 
 //create fire button to add event listener
-const fireButton = document.querySelector('#fire-button');
+let fireButton = document.querySelector('#fire-button');
 const gameNews = document.querySelector('#announcements');
 const deployButton = document.querySelector('#deploy-forces');
 const defendButton = document.querySelector('#defend-forces');
@@ -115,7 +115,6 @@ const createRandomBombSet = () => {
     return computerBombSet;
     
 }
-console.log(createRandomBombSet())
 
 //allow user to queu up shipChoice
 const assignShip = (evt) => {
@@ -167,7 +166,6 @@ const deployForces = (e) => {
     destroyerDiv.style.visibility = "hidden";
     cruiserDiv.style.visibility = "hidden";
 
-    console.log(userShipLocation);
     //function that leads to next 
 }
 
@@ -245,6 +243,8 @@ placeShip(computerBoard.battleShips[2]);
 placeShip(computerBoard.battleShips[3]);
 placeShip(computerBoard.battleShips[4]);
 
+//console.log("this is the computer's board ", computerBoard);
+
 //array of coordinates to pass to checkHit 
 let playerGuess = [];
 
@@ -277,7 +277,7 @@ const checkHit = (playerGuess, randomShipLength, isHorizontal) => {
 
 //clear computer grid of bombs by iterating over each child div
 const clearComputerGrid = () => {
-    console.log("clear computer grid");
+    //console.log("clear computer grid");
     let userGridDiv = document.querySelector('#computer-grid');
     let cellArray = userGridDiv.querySelectorAll('div');
     cellArray.forEach((cell) => {
@@ -289,7 +289,7 @@ const clearComputerGrid = () => {
 
 //clear user grid by iterating over each child div to delete
 const clearUserGrid = () => {
-    console.log("clear user grid");
+    //console.log("clear user grid");
     let userGridDiv = document.querySelector('#user-grid');
     let cellArray = userGridDiv.querySelectorAll('div');
     cellArray.forEach((cell) => {
@@ -314,7 +314,7 @@ const placeHorizontal = (e) => {
         e.target.style.backgroundColor = "transparent";
         //change the horizontal span of cell to match length of ship across cells
         e.target.style.gridColumn = parseInt(e.target.dataset.column, 10) + 1 + ` / span ${userShipChoice.shipLength}`;
-        console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
+        //console.log(`setting column to ${e.target.dataset.column} and span to ${userShipChoice.shipLength}`)
         e.target.style.zIndex = '20';
         //add horizontal ship images
         e.target.style.backgroundImage = `url('source/${userShipChoice.name}.png')`;
@@ -391,8 +391,6 @@ const toggleShip = (e) => {
 
         playerGuess.push(e.target.dataset.column, e.target.dataset.row);
 
-        console.log(shipsChosen);
-
         if(userShipChoice.orientation === '' || userShipChoice.orientation === 'vertical'){
             
             //checkHit(playerGuess, userShipChoice.length);
@@ -439,16 +437,18 @@ writeUserGridHTML();
 // allow computer to take a turn bombing
 const computersTurn = () => {
     clearComputerGrid();
-    detonateBombs(computerBoard, bombSet);
+    detonateBombs(userBoard, createRandomBombSet());
 }
 
 //create array that tracks the placement of bombs and only allows 5, if more than 5 it deletes the last one
 let bombSet = [];
-let successfulHit = false;
 
 const detonateBombs = (whichBoard, bombSet) => {
     
-    console.log(usersTurn);
+    let successfulHit = false;
+
+    console.log(`It's user's turn: ${usersTurn} and the bomb coordinates are: ${bombSet}`);
+    
     let hitCount = 0;
 
     for(let i=0; i < whichBoard.battleShips.length; i++) {
@@ -459,57 +459,84 @@ const detonateBombs = (whichBoard, bombSet) => {
                 if(bombSet[n][0] === whichBoard.battleShips[i].y_coordinate[m] && bombSet[n][1] === whichBoard.battleShips[i].x_coordinate[m]){
                     //gameNews.innerHTML = `You hit the ${whichBoard.battleShips[i].name} at ${whichBoard.battleShips[i].y_coordinate[m]},${whichBoard.battleShips[i].x_coordinate[m]} ."`; // check x and y coordinates, they appear to be backwards
                     successfulHit = true;
-                    hitCount++;
-                    console.log(hitCount);
+                    hitCount++; 
+                    whichBoard.battleShips[i].damage++;
+                    if(whichBoard.battleShips[i].damage === whichBoard.battleShips[i].shipLength){
+                        whichBoard.battleShips[i].isSunk = true;
+                    }
+                    //console.log("Which ship:", whichBoard.battleShips[i].name);
+                    //console.log("it's x: ", whichBoard.battleShips[i].x_coordinate);
+                    //console.log("it's y: ", whichBoard.battleShips[i].y_coordinate);
+                    //console.log("bomb coordinates: ", bombSet[n][0], ",", bombSet[n][1]);
 
-                    gameNews.innerHTML = `"Direct Hit! Enemy Battleship Hit ${hitCount} Times! Attack again!"`;
-                    clearComputerGrid();
+                    
                 } // 0,4 0,3 0,2 0,1 0,0 == x-4,y-0 
             }
         }
     }
-    if(successfulHit === false && usersTurn === true){
+    clearComputerGrid();
+
+    if(successfulHit===true && usersTurn === true) {
+        gameNews.innerHTML = `"Direct Hit! Enemy Battleship was hit ${hitCount} Times! Attack again!"`;
+        usersTurn=true;
+    } else if(successfulHit === false && usersTurn === true){
         gameNews.innerHTML = `Sorry no hit! Press 'defend' to defend your fleet.`;
         usersTurn = false;
         
         defendButton.addEventListener("click", computersTurn);
         //document.addEventListener("keypress", computersTurn);
     } else if (successfulHit === true && usersTurn === false) {
-        gameNews.innerHTML = `Computer damaged your fleet! Press 'defend' to defend your fleet.`;
+        gameNews.innerHTML = `Computer damaged your fleet ${hitCount} times! Press 'defend' to defend your fleet.`;
         usersTurn=false;
     } else if (successfulHit === false && usersTurn === false) {
         gameNews.innerHTML = `Computer's shot missed! Your turn again, Captain!`;
         usersTurn = true;
     }
+    console.log(`It's user's turn: ${usersTurn}`);
+
+    bombSet = [];
 
     //check to see if computer's ships are all sunk, if so declare the winner
     if(checkWinner(whichBoard)) {
-        console.log("Congratulations you won!");
+        if(usersTurn=true) {
+            gameNews.innerHTML = "Congratulations you won!";
+        }
+        else {
+            gameNews.innerHTML = "Sorry captain you lost!";
+        }
+        
     }
 }
-
-
 
 const bombCells = (e) => {
     let computerGridDiv = document.querySelector('#computer-grid');
     let cellArray = computerGridDiv.querySelectorAll('div');
 
     gameNews.innerHTML = 'Press fire when 5 bombs are placed';
-
-    if(bombSet.length < 5) {
+    console.log(bombSet);
+    if(bombSet.length <= 4) {
         bombSet.push([parseInt(e.target.dataset.row, 10), parseInt(e.target.dataset.column, 10)]);
         e.target.innerHTML = `<img class="grid-bombs" src="/source/bomb.png">`;
         
-    } else {
-        let firstBomb = parseInt(bombSet[0][0]*10, 10) + parseInt(bombSet[0][1], 10);
+    } 
+    
+    if(bombSet.length === 5){
+        /*let firstBomb = parseInt(bombSet[0][0]*10, 10) + parseInt(bombSet[0][1], 10);
         cellArray[firstBomb].innerHTML = bombSet[0][1];
         bombSet.shift();
         bombSet.push([parseInt(e.target.dataset.row, 10), parseInt(e.target.dataset.column, 10)])
-        e.target.innerHTML = `<img class="grid-bombs" src="/source/bomb.png">`;
+        e.target.innerHTML = `<img class="grid-bombs" src="/source/bomb.png">`;*/
 
         //add event listener to "fire" button to call detonate function
         //detonateBombs(bombSet);
+        let parent = document.querySelector('#control-panel');
+        fireButton.parentNode.removeChild(fireButton);
+
+        fireButton = fireButton.cloneNode(true);
+        
         fireButton.addEventListener("click", () => detonateBombs(computerBoard, bombSet));
+        parent.prepend(fireButton);
+        console.log("hello");
     }
 }
 
@@ -535,7 +562,7 @@ const writeComputerGridHMTL = () => {
 
 writeComputerGridHMTL();
 
-console.log(shipLocation);
+//console.log(shipLocation);
 
 
 
@@ -551,15 +578,8 @@ console.log(shipLocation);
 // while loop that alternates between user and computer turns
 
 const checkWinner = (board) => {
-    let allFalse = true;
-    for(let i=0; i<board.battleShips.length;i++) {
-        if(board.battleShips[i].isSunk === false){
-            console.log(board.battleShips[i].isSunk);
-            allFalse = false;
-        }
-    }
 
-    return allFalse;
+    return board.battleShips.every(ship=>ship.isSunk);
 }
 
 
