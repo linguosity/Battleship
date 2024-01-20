@@ -15,12 +15,19 @@ p {
     text-wrap: pretty;
 }
 */
-
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('source/PressStart2P-Regular.ttf') format('truetype');
+  }
+  
+ 
+  
 
 body, html {
     margin: auto 0;
     padding: 0;
     height: 100vh;
+    background-color: black;
 }
 
 body {
@@ -32,43 +39,66 @@ body {
     box-sizing: border-box;
     padding: 1%;
     background-color: white;
+
 }
 
 #side-menu {
-    background-color: aqua;
+    background-color: grey;
     height:100%;
-    width: 10%;
+    width: 8%;
 }
 
 #header {
+    grid-column-start: 1;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+#control-panel {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap:wrap;
+    height:100%;
     width:100%;
-    height:30%;
 }
 
 #title {
-    background-color: blue;
+    background-color: black;
     width:100%;
     color:white;
 }
 
 #title img {
     width:100%;
-    height:100%;
 }
 
 #announcements {
+    grid-column-start: 1;
+    grid-column-end: 6;
+    grid-row-start: 2;
+    grid-row-end: 3;
+
     background-color: rgb(28, 28, 180);
-    height:20%;
-    width:60%;
+    height:100%;
+    width:100%;
     color:white;
+    font-family: 'Press Start 2P';
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
 }
 
 #fire-button {
     height:20%;
-    width:5%;
+    width:20%;
     background-color: aquamarine;
 }
 
@@ -80,8 +110,13 @@ main {
     
     height:100%;
     width: 90%;
-    display: flex;
+    display: grid;
     flex-direction: column;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    gap:8px;
+    box-sizing: border-box;
+    background-color: transparent;
 }
 
 footer {
@@ -99,30 +134,57 @@ footer {
 }
 
 #boards {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
+    grid-column-start: 2;
+    grid-column-end: 6;
+    grid-row-start: 3;
+    grid-row-end: 4;
 
+    display: flex;
+    flex-direction: row;
 }
 #user-grid {
     width:340px;
     height:340px;
-    background-color: yellow;
+    background-image: url("https://cdn.midjourney.com/b4837d5d-be3b-42c6-94f2-ff851884387c/0_3.webp");
+    background-repeat: repeat-y;
+    background-size: cover;
 }
 
 #computer-grid {
     width:340px;
     height:340px;
-    gap: 6px;
-    background-color: blueviolet;
+    padding:0px;
+    margin:0px;
+    gap:1px;
+    background-color: rgb(61,114,77);
+    position: relative;
+    
 }
+
+#computer-grid div {
+    border:1px solid rgb(152,199,162);
+}
+/*
+#computer-grid-background {
+    z-index:-1;
+    width:110%;
+    height:110%;
+    position:absolute;
+    margin: auto 0;
+    align-items: center;
+    
+}*/
 
 .grid-bombs {
     width:100%;
 }
 
 #ship-catalogue {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 5;
+    grid-row-end: 6;
+
     display: flex;
     align-items: center;
     margin: 0 auto;

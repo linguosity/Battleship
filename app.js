@@ -84,10 +84,8 @@ const emptySpace = {};
 
 //create fire button to add event listener
 const fireButton = document.querySelector('#fire-button');
-console.log(fireButton);
-
-//
 const gameNews = document.querySelector('#announcements');
+const deployButton = document.querySelector('#deploy-forces')
 
 //create array of shipChoices the user chooses
 let shipsChosen = [];
@@ -95,22 +93,29 @@ let shipsChosen = [];
 //allow user to queu up shipChoice
 const assignShip = (evt) => {
 
-    //push user's choice to an array to track which ships they've clicked on and presumedly placed & do not repeat ships
-   //if(shipsChosen.includes(evt.target.innerHTML) !== true) {
-        evt.preventDefault();
+    evt.preventDefault();
 
-        //save name of ship choice
-        let shipID = evt.target.dataset.name;
+    //save name of ship choice
+    let shipID = evt.target.dataset.name;
 
-        //hold the choice of ship temporarily in a variable
-        userShipChoice = userBoard.battleShips[shipID];
-    
-        shipsChosen.push(evt.target.innerHTML);
+    //hold the choice of ship temporarily in a variable
+    userShipChoice = userBoard.battleShips[shipID];
 
-        console.log("These are the ships already chosen: " + shipsChosen);
-    //}
+    //if array already contains ship, delete from array
+    if(shipsChosen.includes(evt.target.innerHTML)) {
+        shipsChosen.splice(shipsChosen.indexOf(evt.target.innerHTML), 1);
+    }
+
+    shipsChosen.push(evt.target.innerHTML);
+
+
+    if(shipsChosen.length === 5) {
+        deployButton.addEventListener("click", deployForces);
+        console.log("hi");
+    }
     
 }
+
 
 //add event listeners to each ship div in the "harbor"
 const carrierDiv = document.getElementById("carrier");
@@ -129,6 +134,15 @@ battleshipDiv.addEventListener("click", assignShip);
 submarineDiv.addEventListener("click", assignShip);
 destroyerDiv.addEventListener("click", assignShip);
 cruiserDiv.addEventListener("click", assignShip);
+
+const deployForces = (e) => {
+    carrierDiv.style.visibility = "hidden";
+    battleshipDiv.style.visibility = "hidden";
+    submarineDiv.style.visibility = "hidden";
+    destroyerDiv.style.visibility = "hidden";
+    cruiserDiv.style.visibility = "hidden";
+}
+
 
 let shipLocation = [
     [emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace, emptySpace],
@@ -204,18 +218,27 @@ placeShip(computerBoard.battleShips[2]);
 placeShip(computerBoard.battleShips[3]);
 placeShip(computerBoard.battleShips[4]);
 
-// pass checkHit function the coordinates in question (e.g. "5, 2") to see if there's a ship occupying the space??
-const checkHit = (playerGuess, randomShipLength) => {
+//array of coordinates to pass to checkHit 
+let playerGuess = [];
 
-    //loop through battleShips array to see if there's already a ship or part of a ship occupying a space
-    //use current ship class x & y coordinates after running placeShip to check for obstruction
-    for (let i=0; i < randomShipLength; i++) {
-        if (playerGuess[0] === userBoard.battleShips.x_coordinate && playerGuess[1] === userBoard.battleShips.y_coordinate) {
-            return true;
-        } else {
-        return false;
+// pass checkHit function the coordinates in question (e.g. "5, 2") to see if there's a ship occupying the space??
+const checkHit = (playerGuess, randomShipLength, isHorizontal) => {
+
+
+    for(let i=0; i < userBoard.battleShips.length; i++) {
+      
+        for(let m=0; m < userBoard.battleShips[i].shipLength; m++) {
+            
+            if(playerGuess[0] === userBoard.battleShips[i].y_coordinate[m] && playerGuess[1] === userBoard.battleShips[i].x_coordinate[m]){
+                gameNews.innerHTML = gameNews.innerHTML + `You hit the ${userBoard.battleShips[i].name} at ${userBoard.battleShips[i].y_coordinate[m]},${computerBoard.battleShips[i].x_coordinate[m]} ."`; // check x and y coordinates, they appear to be backwards
+                successfulHit = true;
+                
+            } // 0,4 0,3 0,2 0,1 0,0 == x-4,y-0 
+            
         }
     }
+    
+    return successfulHit;
 
 }
 
@@ -309,11 +332,14 @@ const toggleShip = (e) => {
         e.preventDefault();
 
         clearUserGrid();
-    
-        console.log("Shipschosen are: " + shipsChosen.includes(userShipChoice.name) + "and userShipChoice.name is:" + userShipChoice.name);
+
+        playerGuess.push(e.target.dataset.column, e.target.dataset.row);
+
+        console.log(shipsChosen);
 
         if(userShipChoice.orientation === '' || userShipChoice.orientation === 'vertical'){
             
+            //checkHit(playerGuess, userShipChoice.length);
             //if(!doesShipBlockHorizontalPlacement()) {
             placeHorizontal(e);
             //}
@@ -324,8 +350,6 @@ const toggleShip = (e) => {
             placeVertical(e);
             //}
         }
-
-        console.log(userBoard.battleShips);
         
 }
 
@@ -361,7 +385,7 @@ let bombSet = [];
 let successfulHit = false;
 
 const detonateBombs = (bombSet) => {
-    console.log("hello");
+    
     for(let i=0; i < computerBoard.battleShips.length; i++) {
       
         for(let m=0; m < computerBoard.battleShips[i].shipLength; m++) {
